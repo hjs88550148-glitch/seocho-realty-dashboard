@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>서초구 부동산 브리핑 | 홍길동부동산</title>
+<link rel="icon" href="/static/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <img src="/static/logo.svg" alt="홍길동부동산 로고" class="logo">
+    <div>
+      <div class="brand-name">홍길동부동산 <span class="brand-en">SEOCHO PREMIUM REALTY</span></div>
+      <div class="brand-sub">서초구 아파트 전문 공인중개사사무소</div>
+    </div>
+  </div>
+  <div class="top-right">
+    <div class="tel">☎ Tel. <b>000-XXXX-XXXX</b></div>
+    <button class="btn ghost" onclick="window.print()">브리핑 인쇄</button>
+  </div>
+</header>
+
+<section class="filters" id="filters">
+  <div class="f-group">
+    <label>지역</label>
+    <div class="chips" id="dongChips"></div>
+  </div>
+  <div class="f-row">
+    <div class="f-group">
+      <label>기간</label>
+      <div class="seg" id="modeSeg">
+        <button data-mode="week">주간</button>
+        <button data-mode="month" class="on">월간</button>
+        <button data-mode="custom">직접지정</button>
+      </div>
+    </div>
+    <div class="f-group">
+      <label>날짜</label>
+      <div class="dates">
+        <input type="date" id="dFrom"> <span>~</span> <input type="date" id="dTo">
+        <button class="btn" id="btnApply">조회</button>
+      </div>
+    </div>
+    <div class="f-note" id="periodNote"></div>
+  </div>
+</section>
+
+<div id="loading" class="loading">국토교통부 실거래가 데이터를 불러오는 중…</div>
+<div id="errorBox" class="error" hidden></div>
+
+<section class="kpis" id="kpis"></section>
+
+<main class="layout">
+  <div class="col-left">
+    <section class="card" id="topCard">
+      <div class="card-head">
+        <h2>서초구 아파트 실거래 TOP 10 <small id="topScope"></small></h2>
+        <div class="seg small" id="sortSeg">
+          <button data-sort="price" class="on">최고가순</button>
+          <button data-sort="count">거래량순</button>
+        </div>
+      </div>
+      <div class="tabs" id="typeTabs">
+        <button data-type="매매" class="on">매매</button>
+        <button data-type="전세">전세</button>
+        <button data-type="월세">월세</button>
+      </div>
+      <ol class="toplist" id="topList"></ol>
+    </section>
+
+    <section class="card" id="listingCard">
+      <div class="card-head">
+        <h2>홍길동부동산 추천매물</h2>
+        <button class="btn" id="btnAddListing">+ 매물 등록</button>
+      </div>
+      <div class="listings" id="listings"></div>
+    </section>
+
+    <section class="card" id="analysisCard">
+      <div class="card-head">
+        <h2>입지분석 <small id="anaTitle">— 아파트를 선택하세요</small></h2>
+      </div>
+      <div id="analysis" class="analysis"></div>
+    </section>
+  </div>
+
+  <div class="col-right">
+    <section class="card map-card">
+      <div class="card-head">
+        <h2 id="mapTitle">TOP 10 위치</h2>
+        <div class="legend-inline">
+          <span><i class="dot" style="background:var(--s-trade)"></i>TOP10</span>
+          <span><i class="dot star">★</i>추천매물</span>
+          <button class="btn ghost small" id="btnFitAll">전체보기</button>
+        </div>
+      </div>
+      <div id="map"></div>
+      <div class="map-foot" id="mapFoot">마커 아래 숫자는 해당 단지의 최근 실거래가입니다.</div>
+    </section>
+  </div>
+</main>
+
+<section class="market">
+  <h2 class="sec-title">시장 동향 <small id="mktScope"></small></h2>
+  <div class="grid3">
+    <div class="card">
+      <h3>거래량 추이 <small id="volUnit"></small></h3>
+      <div class="chart-box"><canvas id="chVol"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>매매 평균 평당가 추이 <small>(만원/3.3㎡)</small></h3>
+      <div class="chart-box"><canvas id="chPpp"></canvas></div>
+    </div>
+    <div class="card">
+      <h3 id="idxTitle">아파트 가격지수</h3>
+      <div class="chart-box"><canvas id="chIdx"></canvas></div>
+      <p class="hint" id="idxNote"></p>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>동별 매매 평균 평당가 · 거래량 <small>(선택 기간)</small></h3>
+      <div class="table-wrap"><table class="tbl" id="dongTable"></table></div>
+    </div>
+    <div class="card">
+      <h3>면적대별 매매 거래 비중 <small>(선택 기간)</small></h3>
+      <div class="area-bars" id="areaBars"></div>
+      <h3 style="margin-top:18px">거래 유형 <small>(선택 기간)</small></h3>
+      <div class="area-bars" id="typeBars"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>서울 아파트 청약·분양 일정 <small>(한국부동산원 청약홈)</small></h3>
+    <div class="table-wrap"><table class="tbl" id="applyTable"><tr><td>불러오는 중…</td></tr></table></div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div>자료: 국토교통부 아파트 매매·전월세 실거래가(공공데이터포털), 한국부동산원 청약홈·R-ONE, OpenStreetMap 기여자</div>
+  <div>※ 실거래가는 계약 후 30일 이내 신고되므로 최근 기간 수치는 추후 증가할 수 있습니다. 입지·개발계획은 참고자료이며 실제와 다를 수 있습니다.</div>
+  <div class="foot-brand">홍길동부동산 · Tel. 000-XXXX-XXXX</div>
+</footer>
+
+<dialog id="dlgListing">
+  <form method="dialog" id="formListing">
+    <h3>추천매물 등록</h3>
+    <div class="form-grid">
+      <label>단지명<input name="apt" required placeholder="예: 반포자이"></label>
+      <label>법정동<select name="dong"></select></label>
+      <label>거래유형<select name="type"><option>매매</option><option>전세</option><option>월세</option></select></label>
+      <label>가격/보증금(만원)<input name="price" type="number" required placeholder="예: 350000"></label>
+      <label>월세(만원)<input name="rent" type="number" placeholder="월세일 때"></label>
+      <label>전용면적(㎡)<input name="area" type="number" step="0.01" required placeholder="84.9"></label>
+      <label>층<input name="floor" placeholder="중층"></label>
+      <label>향<input name="dir" placeholder="남향"></label>
+      <label class="full">특징<input name="note" placeholder="한강조망, 역세권 등"></label>
+    </div>
+    <p class="hint">위치는 단지명으로 자동 검색됩니다. 저장된 매물은 이 PC의 브라우저에 보관됩니다.</p>
+    <div class="dlg-actions">
+      <button value="cancel" class="btn ghost" formnovalidate>취소</button>
+      <button value="ok" class="btn">등록</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="/static/knowledge.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

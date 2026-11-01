@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#16325C"/>
+      <stop offset="1" stop-color="#0A1B36"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F3D27A"/>
+      <stop offset="1" stop-color="#B8892B"/>
+    </linearGradient>
+  </defs>
+  <!-- 방패형 엠블럼 -->
+  <path d="M60 4 L108 18 V58 C108 86 88 104 60 116 C32 104 12 86 12 58 V18 Z" fill="url(#bg)" stroke="url(#gold)" stroke-width="4"/>
+  <!-- 우면산 능선 -->
+  <path d="M22 66 C34 52 44 50 54 58 C62 48 76 44 98 62" fill="none" stroke="#3E6AA8" stroke-width="3" stroke-linecap="round"/>
+  <!-- 스카이라인 (아파트 3동) -->
+  <rect x="34" y="42" width="14" height="38" rx="1.5" fill="url(#gold)"/>
+  <rect x="52" y="28" width="16" height="52" rx="1.5" fill="url(#gold)"/>
+  <rect x="72" y="46" width="14" height="34" rx="1.5" fill="url(#gold)"/>
+  <path d="M52 28 L60 20 L68 28 Z" fill="url(#gold)"/>
+  <g fill="#0A1B36">
+    <rect x="38" y="48" width="2.5" height="3"/><rect x="42.5" y="48" width="2.5" height="3"/>
+    <rect x="38" y="55" width="2.5" height="3"/><rect x="42.5" y="55" width="2.5" height="3"/>
+    <rect x="38" y="62" width="2.5" height="3"/><rect x="42.5" y="62" width="2.5" height="3"/>
+    <rect x="56" y="34" width="3" height="3"/><rect x="61" y="34" width="3" height="3"/>
+    <rect x="56" y="41" width="3" height="3"/><rect x="61" y="41" width="3" height="3"/>
+    <rect x="56" y="48" width="3" height="3"/><rect x="61" y="48" width="3" height="3"/>
+    <rect x="56" y="55" width="3" height="3"/><rect x="61" y="55" width="3" height="3"/>
+    <rect x="76" y="52" width="2.5" height="3"/><rect x="80.5" y="52" width="2.5" height="3"/>
+    <rect x="76" y="59" width="2.5" height="3"/><rect x="80.5" y="59" width="2.5" height="3"/>
+  </g>
+  <!-- 한강 물결 -->
+  <path d="M24 86 C34 82 42 90 52 86 C62 82 70 90 80 86 C88 83 94 86 96 86" fill="none" stroke="#5FA8E8" stroke-width="3" stroke-linecap="round"/>
+  <text x="60" y="104" text-anchor="middle" font-family="Pretendard, 'Malgun Gothic', sans-serif" font-size="13" font-weight="800" fill="url(#gold)" letter-spacing="2">서초</text>
+</svg>
